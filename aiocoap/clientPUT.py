@@ -29,7 +29,7 @@ async def main():
 
     await asyncio.sleep(2)
 
-    payload = b"The quick brown fox jumps over the lazy dog.\n"
+    payload = b"SHIBALLLLLL\n"
     request = Message(code=PUT, payload=payload, uri="coap://192.168.43.10/other/block")
 
     response = await context.request(request).response

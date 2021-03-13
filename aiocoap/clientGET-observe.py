@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 async def main():
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.10/time', observe=0)
+    request = Message(code=GET, uri='coap://192.168.43.10/other/block', observe=6)
 
     pr = protocol.request(request)
 
