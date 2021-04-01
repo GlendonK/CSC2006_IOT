@@ -19,10 +19,10 @@ from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
-async def main():
+async def main(url):
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.10/whoami')
+    request = Message(code=GET, uri=url)
 
     try:
         response = await protocol.request(request).response

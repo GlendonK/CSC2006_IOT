@@ -110,6 +110,24 @@ class WhoAmI(resource.Resource):
         return aiocoap.Message(content_format=0,
                 payload="\n".join(text).encode('utf8'))
 
+
+class Raspi(resource.Resource):
+    """Example resource which supports the GET and PUT methods. It sends large
+    responses, which trigger blockwise transfer."""
+
+    def __init__(self):
+        super().__init__()
+        self.set_content(b"Temp from raspi: \n")
+        sensor = Sensor()
+
+    def set_content(self, content):
+        self.content = content
+        
+
+    async def render_get(self, request):
+        return aiocoap.Message(payload=self.content)
+
+
 # logging setup
 
 logging.basicConfig(level=logging.INFO)
@@ -125,6 +143,7 @@ def main():
     root.add_resource(['other', 'block'], BlockResource())
     root.add_resource(['other', 'separate'], SeparateLargeResource())
     root.add_resource(['whoami'], WhoAmI())
+    root.add_resource(['raspi', 'temp'], Raspi())
 
     asyncio.Task(aiocoap.Context.create_server_context(root))
 

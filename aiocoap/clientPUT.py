@@ -19,7 +19,10 @@ from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
-async def main():
+"""
+@params b""
+"""
+async def main(url, level):
     """Perform a single PUT request to localhost on the default port, URI
     "/other/block". The request is sent 2 seconds after initialization.
 
@@ -29,8 +32,8 @@ async def main():
 
     await asyncio.sleep(2)
 
-    payload = b"SHIBALLLLLL\n"
-    request = Message(code=PUT, payload=payload, uri="coap://192.168.43.10/other/block")
+    payload = level
+    request = Message(code=PUT, payload=payload, uri=url)
 
     response = await context.request(request).response
 
