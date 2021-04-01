@@ -118,7 +118,7 @@ class Raspi(resource.Resource):
     def __init__(self):
         super().__init__()
         self.set_content(b"Temp from raspi: \n")
-        sensor = Sensor()
+        #sensor = Sensor()
 
     def set_content(self, content):
         self.content = content
