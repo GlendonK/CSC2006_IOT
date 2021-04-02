@@ -32,8 +32,8 @@ async def main():
     async for r in pr.observation:
         print("Next result: %s\n%r"%(r, r.payload))
 
-        pr.observation.cancel()
-        break
+        #pr.observation.cancel()
+        #break
     print("Loop ended, sticking around")
     await asyncio.sleep(5)
 
