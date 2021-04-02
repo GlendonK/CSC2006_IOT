@@ -72,9 +72,7 @@ class Sensors:
 
 if "__main__" == __name__:
 	sensors = Sensors()
-	sensors.setPowerLevel("low")
-	print(sensors.getTemp())
-	print(sensors.getHumidity())
+	sensors.clear()
 
 
 

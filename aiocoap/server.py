@@ -82,6 +82,7 @@ class TimeResource(resource.ObservableResource):
         self.handle = asyncio.get_event_loop().call_later(1, self.notify) # time interval to resend
 
     def update_observation_count(self, count):
+        print("COUNT@@@@@@@@@@@@@@@@@@@@@@@: {}".format(count))
         if count and self.handle is None:
             print("Starting the clock")
             self.reschedule()
@@ -111,16 +112,14 @@ class WhoAmI(resource.Resource):
         return aiocoap.Message(content_format=0,
                 payload="\n".join(text).encode('utf8'))
     
-class RaspiHum(resource.Resource):
+class RaspiHum(resource.ObservableResource):
     """Class to get raspi humidity."""
     
 
     def __init__(self):
         super().__init__()
-        sensor = Sensors()
-        hum = sensor.getHumidity()
-        hum = b"%f" %hum
-        self.set_content(hum)
+        self.handle = None
+        
         
 
     def set_content(self, content):
@@ -129,18 +128,38 @@ class RaspiHum(resource.Resource):
         
 
     async def render_get(self, request):
+        sensor = Sensors()
+        hum = sensor.getHumidity()
+        hum = b"%f" %hum
+        self.set_content(hum)
         return aiocoap.Message(payload=self.content)
     
-class RaspiTemp(resource.Resource):
+    def notify(self):
+        self.updated_state()
+        self.reschedule()
+
+    def reschedule(self):
+        self.handle = asyncio.get_event_loop().call_later(1, self.notify) # time interval to resend
+
+    def update_observation_count(self, count):
+        print("COUNT@@@@@@@@@@@@@@@@@@@@@@@: {}".format(count))
+        if count and self.handle is None:
+            print("Starting the hum sensor")
+            self.reschedule()
+        if count == 0 and self.handle:
+            print("Stopping the hum sensor")
+            self.handle.cancel()
+            self.handle = None
+    
+class RaspiTemp(resource.ObservableResource):
     """Class to get raspi temperature"""
     
 
     def __init__(self):
         super().__init__()
-        sensor = Sensors()
-        temp = sensor.getTemp()
-        temp = b"%f" %temp
-        self.set_content(temp)
+        self.handle = None
+        
+        
         
 
     def set_content(self, content):
@@ -148,7 +167,68 @@ class RaspiTemp(resource.Resource):
         
 
     async def render_get(self, request):
+        sensor = Sensors()
+        temp = sensor.getTemp()
+        temp = b"%f" %temp
+        self.set_content(temp)
         return aiocoap.Message(payload=self.content)
+    
+    def notify(self):
+        self.updated_state()
+        self.reschedule()
+
+    def reschedule(self):
+        self.handle = asyncio.get_event_loop().call_later(1, self.notify) # time interval to resend
+
+    def update_observation_count(self, count):
+        print("COUNT@@@@@@@@@@@@@@@@@@@@@@@: {}".format(count))
+        if count and self.handle is None:
+            print("Starting the temp sensor")
+            self.reschedule()
+        if count == 0 and self.handle:
+            print("Stopping the temp sensor")
+            self.handle.cancel()
+            self.handle = None
+
+class RaspiObserve(resource.ObservableResource):
+    """Class to observe pi temp and hum"""
+    
+
+    def __init__(self):
+        super().__init__()
+        self.handle = None
+        
+
+    def set_content(self, content):
+        self.content = content
+        
+
+    async def render_get(self, request):
+        sensor = Sensors()
+        temp = sensor.getTemp()
+        hum = sensor.getHumidity()
+        
+        data = b'{"T":%f, "H":%f}'%(temp,hum)
+        self.set_content(data)
+        return aiocoap.Message(payload=self.content)
+    
+    def notify(self):
+        self.updated_state()
+        self.reschedule()
+
+    def reschedule(self):
+        self.handle = asyncio.get_event_loop().call_later(2, self.notify) # time interval to resend
+
+    def update_observation_count(self, count):
+        print("COUNT@@@@@@@@@@@@@@@@@@@@@@@: {}".format(count))
+        if count and self.handle is None:
+            print("Starting the temp sensor")
+            self.reschedule()
+        if count == 0 and self.handle:
+            print("Stopping the temp sensor")
+            self.handle.cancel()
+            self.handle = None
+
 
 class RaspiLED(resource.Resource):
     """Class to get raspi temperature"""
@@ -193,6 +273,7 @@ def main():
     root.add_resource(['raspi', 'temp'], RaspiTemp())
     root.add_resource(['raspi', 'hum'], RaspiHum())
     root.add_resource(['raspi', 'power'], RaspiLED())
+    root.add_resource(['raspi', 'obs'], RaspiObserve())
 
     asyncio.Task(aiocoap.Context.create_server_context(root))
 
