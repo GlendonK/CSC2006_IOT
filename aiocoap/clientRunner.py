@@ -2,6 +2,10 @@ import clientPUT
 import clientGET
 import asyncio
 
+"""
+192.168.43.210  === CENTRAL PI 
+"""
+
 async def getClient(url):
     await clientGET.main(url)
 
@@ -32,7 +36,7 @@ if __name__ == "__main__":
                     break
             #pi 2
             if pi == 2 or pi == "2":
-                ip = "192.168.43.204"
+                ip = "192.168.43.67"
                 typeOfData = input("GET temp or hum? :")
 
                 if typeOfData == "temp":
@@ -48,7 +52,7 @@ if __name__ == "__main__":
                     break
             #pi3
             if pi == 3 or pi == "3":
-                ip = "192.168.43.204"
+                ip = "192.168.43.10"
                 typeOfData = input("GET temp or hum? :")
 
                 if typeOfData == "temp":
@@ -65,6 +69,11 @@ if __name__ == "__main__":
 
             else:
                 print("input error... try again.")
+
+
+
+
+
 
 
 
@@ -96,7 +105,7 @@ if __name__ == "__main__":
 
             # pi 2
             if pi == 2 or pi == "2":
-                ip = "192.168.43.204"
+                ip = "192.168.43.67"
                 level = input("PUT what power level? low, meduim, high:")
 
                 if level == "low":
@@ -118,7 +127,7 @@ if __name__ == "__main__":
                     break
             # pi 3
             if pi == 3 or pi == "3":
-                ip = "192.168.43.204"
+                ip = "192.168.43.10"
                 level = input("PUT what power level? low, meduim, high:")
 
                 if level == "low":

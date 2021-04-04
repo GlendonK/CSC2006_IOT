@@ -28,7 +28,7 @@ setHum = 40 # init default and use else where
 async def main():
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.204/raspi/obs', observe=0)
+    request = Message(code=GET, uri='coap://192.168.43.10/raspi/obs', observe=0)
 
     pr = protocol.request(request)
 
@@ -46,7 +46,7 @@ async def main():
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
 
-        url = 'coap://192.168.43.204/raspi/power'
+        url = 'coap://192.168.43.10/raspi/power'
 
         if temp > setTemp+2:
             level = b'high'
