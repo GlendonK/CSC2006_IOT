@@ -27,7 +27,6 @@ def send(temp, hum, temp_string, hum_string):
     data[temp_string] = temp
     data[hum_string] = hum
     data = json.dumps(data)
-    print("LOL")
     client.publish(topic,data,0)
 
     client.loop_stop()
