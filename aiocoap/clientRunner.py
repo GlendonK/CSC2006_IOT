@@ -15,7 +15,7 @@ if __name__ == "__main__":
             pi = input("which pi? : 1, 2, 3")
 
             if pi == 1 or pi == "1":
-                ip = "192.168.43.10"
+                ip = "192.168.43.204"
                 typeOfData = input("GET temp or hum? :")
 
                 if typeOfData == "temp":
@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
             pi = input("which pi? : 1, 2, 3")
             if pi == 1 or pi == "1":
-                ip = "192.168.43.10"
+                ip = "192.168.43.204"
                 level = input("PUT what power level? low, meduim, high:")
 
                 if level == "low":

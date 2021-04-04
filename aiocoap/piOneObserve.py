@@ -16,6 +16,7 @@ import logging
 import asyncio
 import json
 import clientPUT
+import mqtt_client
 
 from aiocoap import *
 
@@ -27,7 +28,7 @@ async def put(url, level):
 async def main():
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.10/raspi/obs', observe=0)
+    request = Message(code=GET, uri='coap://192.168.43.204/raspi/obs', observe=0)
 
     pr = protocol.request(request)
 
@@ -39,10 +40,13 @@ async def main():
         data = json.loads(r.payload)
         temp = data["T"]
         hum = data["H"]
+        temp_mqtt = float(temp)
+        hum_mqtt = float(hum)
+        mqtt_client.send(temp,hum)
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
 
-        url = 'coap://192.168.43.10/raspi/power'
+        url = 'coap://192.168.43.204/raspi/power'
 
         if temp > 42:
             level = b'high'

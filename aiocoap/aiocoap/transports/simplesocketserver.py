@@ -85,7 +85,7 @@ class _Address(namedtuple('_Address', ['serversocket', 'address']), interfaces.E
 class _DatagramServerSocketSimple(asyncio.DatagramProtocol):
     @classmethod
     async def create(cls, bind, log, loop, new_message_callback, new_error_callback):
-        if bind is None or bind[0] in ('127.0.0.1', '', None):
+        if bind is None or bind[0] in ('localhost', '', None):
             # If you feel tempted to remove this check, think about what
             # happens if two configured addresses can both route to a
             # requesting endpoint, how that endpoint is supposed to react to a
