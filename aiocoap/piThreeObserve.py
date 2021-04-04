@@ -39,7 +39,7 @@ async def main():
         hum = data["H"]
         temp_mqtt = float(temp)
         hum_mqtt = float(hum)
-        mqtt_client.send(temp,hum, "temp1", "hum1")
+        mqtt_client.send(temp,hum, "temp3", "hum3")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
 
