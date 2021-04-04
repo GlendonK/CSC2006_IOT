@@ -17,7 +17,7 @@ import asyncio
 import json
 import clientPUT
 import mqtt_client
-
+from time import time
 from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
@@ -29,6 +29,8 @@ async def main():
     protocol = await Context.create_client_context()
 
     request = Message(code=GET, uri='coap://192.168.43.204/raspi/obs', observe=0)
+
+    startTime = int(time() * 1000)
 
     pr = protocol.request(request)
 
@@ -45,6 +47,8 @@ async def main():
         mqtt_client.send(temp,hum, "temp1", "hum1")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
+        endTime = int(time() * 1000) - startTime
+        print("Time for Observe: ", endTime)
 
         url = 'coap://192.168.43.204/raspi/power'
 
