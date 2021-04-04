@@ -22,8 +22,8 @@ from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
-setTemp = 40
-setHum = 40
+setTemp = 40 # init default and use else where
+setHum = 40 # init default and use else where
 
 async def main():
     protocol = await Context.create_client_context()
