@@ -44,7 +44,7 @@ async def main():
         hum = data["H"]
         temp_mqtt = float(temp)
         hum_mqtt = float(hum)
-        mqtt_client.send(temp,hum, "temp1", "hum1")
+        mqtt_client.send(temp_mqtt,hum_mqtt, "temp1", "hum1")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
         endTime = int(time() * 1000) - startTime
@@ -132,6 +132,6 @@ async def main():
     await asyncio.sleep(5)
 
 if __name__ == "__main__":
-    setTemp = input("Set Your Temperature: ")
-    setHum = input("Set Your Humidity: ")
+    setTemp = float(input("Set Your Temperature: "))
+    setHum = float(input("Set Your Humidity: "))
     asyncio.get_event_loop().run_until_complete(main())

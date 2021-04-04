@@ -28,6 +28,7 @@ def send(temp, hum, temp_string, hum_string):
     data[hum_string] = hum
     data = json.dumps(data)
     client.publish(topic,data,0)
+    print("MQTT")
 
     client.loop_stop()
     client.disconnect()
