@@ -28,7 +28,7 @@ async def put(url, level):
 async def main():
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.10/raspi/obs', observe=0)
+    request = Message(code=GET, uri='coap://192.168.43.210/raspi/obs', observe=0)
 
     pr = protocol.request(request)
 
@@ -42,11 +42,11 @@ async def main():
         hum = data["H"]
         temp_mqtt = float(temp)
         hum_mqtt = float(hum)
-        mqtt_client.send(temp,hum, "temp1", "hum1")
+        mqtt_client.send(temp,hum, "temp3", "hum3")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
 
-        url = 'coap://192.168.43.10/raspi/power'
+        url = 'coap://192.168.43.210/raspi/power'
 
         if temp > 42:
             level = b'high'
@@ -129,3 +129,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(main())
+
