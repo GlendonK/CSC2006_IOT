@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 import json
 import random
 
-def send(temp, hum):
+def send(temp, hum, temp_key, hum_key):
     THINGSBOARD_HOST = '129.126.163.157'
     ACCESS_TOKEN = 'GRitEZOlakGkUdaEpP3e'
     topic = "v1/devices/me/telemetry"
@@ -24,8 +24,8 @@ def send(temp, hum):
     client.loop_start()
     print("starting") # show what is printed in terminal
     data=dict()
-    data["temp"] = temp
-    data["hum"] = hum
+    data[temp_key] = temp
+    data[hum_key] = hum
     data = json.dumps(data)
     print("LOL")
     client.publish(topic,data,0)
