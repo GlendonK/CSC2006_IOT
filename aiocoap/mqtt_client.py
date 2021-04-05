@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 import json
 import random
 
-def send(temp, hum, tems, hums):
+def send(temp, hum, temps, hums):
     THINGSBOARD_HOST = '129.126.163.157'
     ACCESS_TOKEN = 'GRitEZOlakGkUdaEpP3e'
     topic = "v1/devices/me/telemetry"
