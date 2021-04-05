@@ -217,7 +217,7 @@ class RaspiObserve(resource.ObservableResource):
         self.reschedule()
 
     def reschedule(self):
-        self.handle = asyncio.get_event_loop().call_later(2, self.notify) # time interval to resend
+        self.handle = asyncio.get_event_loop().call_later(1, self.notify) # time interval to resend
 
     def update_observation_count(self, count):
         print("COUNT@@@@@@@@@@@@@@@@@@@@@@@: {}".format(count))
