@@ -14,15 +14,18 @@ for some more information."""
 
 import logging
 import asyncio
+from time import time
 
 from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
-async def main():
+async def main(url):
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://localhost/raspi/temp')
+
+    startTime = int(time() * 1000)
+    request = Message(code=GET, uri=url)
 
     try:
         response = await protocol.request(request).response
@@ -31,6 +34,8 @@ async def main():
         print(e)
     else:
         print('Result: %s\n%r'%(response.code, response.payload))
+        endTime = int(time() * 1000) - startTime
+        print("Time for GET: ", endTime)
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(main())
