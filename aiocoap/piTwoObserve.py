@@ -17,18 +17,20 @@ import asyncio
 import json
 import clientPUT
 import mqtt_client
-
+from time import time
 from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
-async def put(url, level):
-    await asyncio.run(clientPUT.main(url, level))
+setTemp = 40
+setHum = 40
 
 async def main():
     protocol = await Context.create_client_context()
 
     request = Message(code=GET, uri='coap://192.168.43.67/raspi/obs', observe=0)
+
+    startTime = int(time() * 1000)
 
     pr = protocol.request(request)
 
@@ -42,13 +44,16 @@ async def main():
         hum = data["H"]
         temp_mqtt = float(temp)
         hum_mqtt = float(hum)
-        mqtt_client.send(temp,hum, "temp2", "hum2")
+        mqtt_client.send(temp_mqtt,hum_mqtt, "temp1", "hum1")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
+        endTime = int(time() * 1000) - startTime
+        print("Time for Observe: ", endTime)
+        startTime = int(time() * 1000)
 
         url = 'coap://192.168.43.67/raspi/power'
 
-        if temp > 42:
+        if temp > setTemp+2:
             level = b'high'
             context = await Context.create_client_context()
             await asyncio.sleep(2) # sleep 2 sec before send request
@@ -59,7 +64,7 @@ async def main():
             print('Result: %s\n%r'%(response.code, response.payload))
             
         
-        if temp > 41 and temp <= 42:
+        if temp > setTemp and temp <= setTemp+1:
             level = b'medium'
             context = await Context.create_client_context()
             await asyncio.sleep(2)# sleep 2 sec before send request
@@ -69,7 +74,7 @@ async def main():
 
             print('Result: %s\n%r'%(response.code, response.payload))
             
-            if hum >54:
+            if hum >setHum+2:
                 level = b'high'
                 context = await Context.create_client_context()
                 await asyncio.sleep(2) # sleep 2 sec before send request
@@ -80,7 +85,7 @@ async def main():
                 print('Result: %s\n%r'%(response.code, response.payload))
      
 
-        if temp <= 41:
+        if temp <= setTemp:
             level = b'low'
             context = await Context.create_client_context()
             await asyncio.sleep(2)# sleep 2 sec before send request
@@ -90,7 +95,7 @@ async def main():
 
             print('Result: %s\n%r'%(response.code, response.payload))
 
-            if hum >54:
+            if hum >setHum+2:
                 level = b'high'
                 context = await Context.create_client_context()
                 await asyncio.sleep(2) # sleep 2 sec before send request
@@ -100,7 +105,7 @@ async def main():
 
                 print('Result: %s\n%r'%(response.code, response.payload))
 
-            if hum > 52 and hum <=54:
+            if hum > setHum and hum <=setHum+2:
                 level = b'medium'
                 context = await Context.create_client_context()
                 await asyncio.sleep(2)# sleep 2 sec before send request
@@ -110,7 +115,7 @@ async def main():
 
                 print('Result: %s\n%r'%(response.code, response.payload))
 
-            if hum <= 52:
+            if hum <= setHum:
                 level = b'low'
                 context = await Context.create_client_context()
                 await asyncio.sleep(2)# sleep 2 sec before send request
@@ -128,5 +133,6 @@ async def main():
     await asyncio.sleep(5)
 
 if __name__ == "__main__":
+    setTemp = float(input("Set Your Temperature: "))
+    setHum = float(input("Set Your Humidity: "))
     asyncio.get_event_loop().run_until_complete(main())
-

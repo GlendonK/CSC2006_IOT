@@ -28,7 +28,7 @@ setHum = 40
 async def main():
     protocol = await Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://192.168.43.204/raspi/obs', observe=0)
+    request = Message(code=GET, uri='coap://192.168.43.10/raspi/obs', observe=0)
 
     startTime = int(time() * 1000)
 
@@ -51,7 +51,7 @@ async def main():
         print("Time for Observe: ", endTime)
         startTime = int(time() * 1000)
 
-        url = 'coap://192.168.43.204/raspi/power'
+        url = 'coap://192.168.43.10/raspi/power'
 
         if temp > setTemp+2:
             level = b'high'
