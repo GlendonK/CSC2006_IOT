@@ -47,10 +47,7 @@ async def main():
         mqtt_client.send(temp_mqtt,hum_mqtt, "temp1", "hum1")
         print("TEMPERATURE: {}".format(temp))
         print("HUMIDITY: {}".format(hum))
-        endTime = int(time() * 1000) - startTime
-        print("Time for Observe: ", endTime)
-        startTime = int(time() * 1000)
-
+        
         url = 'coap://192.168.43.10/raspi/power'
 
         if temp > setTemp+2:
@@ -62,6 +59,10 @@ async def main():
             response = await context.request(request).response
 
             print('Result: %s\n%r'%(response.code, response.payload))
+            endTime = int(time() * 1000) - startTime
+            print("Time for Observe: ", endTime)
+            startTime = int(time() * 1000)
+
             
         
         if temp > setTemp and temp <= setTemp+1:
@@ -73,6 +74,9 @@ async def main():
             response = await context.request(request).response
 
             print('Result: %s\n%r'%(response.code, response.payload))
+            endTime = int(time() * 1000) - startTime
+            print("Time for Observe: ", endTime)
+            startTime = int(time() * 1000)
             
             if hum >setHum+2:
                 level = b'high'
@@ -83,6 +87,9 @@ async def main():
                 response = await context.request(request).response
 
                 print('Result: %s\n%r'%(response.code, response.payload))
+                endTime = int(time() * 1000) - startTime
+                print("Time for Observe: ", endTime)
+                startTime = int(time() * 1000)
      
 
         if temp <= setTemp:
@@ -94,6 +101,9 @@ async def main():
             response = await context.request(request).response
 
             print('Result: %s\n%r'%(response.code, response.payload))
+            endTime = int(time() * 1000) - startTime
+            print("Time for Observe: ", endTime)
+            startTime = int(time() * 1000)
 
             if hum >setHum+2:
                 level = b'high'
@@ -104,6 +114,9 @@ async def main():
                 response = await context.request(request).response
 
                 print('Result: %s\n%r'%(response.code, response.payload))
+                endTime = int(time() * 1000) - startTime
+                print("Time for Observe: ", endTime)
+                startTime = int(time() * 1000)
 
             if hum > setHum and hum <=setHum+2:
                 level = b'medium'
@@ -114,6 +127,9 @@ async def main():
                 response = await context.request(request).response
 
                 print('Result: %s\n%r'%(response.code, response.payload))
+                endTime = int(time() * 1000) - startTime
+                print("Time for Observe: ", endTime)
+                startTime = int(time() * 1000)
 
             if hum <= setHum:
                 level = b'low'
@@ -124,6 +140,9 @@ async def main():
                 response = await context.request(request).response
 
                 print('Result: %s\n%r'%(response.code, response.payload))
+                endTime = int(time() * 1000) - startTime
+                print("Time for Observe: ", endTime)
+                startTime = int(time() * 1000)
 
             
 
